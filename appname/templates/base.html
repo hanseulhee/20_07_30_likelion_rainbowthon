@@ -1,0 +1,168 @@
+{% load static %}
+<!--
+    {% comment %}
+    넘겨줘야 할 목록
+    user.name
+    user.email
+    user.image
+    title
+    currentTab
+    {% endcomment %}
+-->
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+    <link rel="stylesheet" href="{% static 'tailwind.min.css' %}">
+    <!--<link rel="stylesheet" href="/static/tailwind.min.css">-->
+    <title>{{title}}</title>
+    <meta charset="utf-8">
+    <style>
+    </style>
+</head>
+
+<body x-data="{ isMobileMenuOpen: false, isProfileDropdown: false, tab: '{{currentTab}}', isLogged: false}">
+    <div>
+        <nav class="bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-on-dark.svg"
+                                alt="Workflow logo">
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline">
+                                <a href="#" @click="tab=1" :class="tab==1 ? 'selected' : 'tab'">Dashboard</a>
+                                <a href="#" @click="tab=2" :class="tab==2 ? 'selected' : 'tab'" class="ml-4 ">Team</a>
+                                <a href="#" @click="tab=3" :class="tab==3 ? 'selected' : 'tab'"
+                                    class="ml-4">Projects</a>
+                                <a href="#" @click="tab=4" :class="tab==4 ? 'selected' : 'tab'"
+                                    class="ml-4">Calendar</a>
+                                <a href="#" @click="tab=5" :class="tab==5 ? 'selected' : 'tab'" class="ml-4">Reports</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div x-show="isLogged" class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <button
+                                class="p-1 border-2 border-transparent text-gray-400 rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-gray-700"
+                                aria-label="Notifications">
+                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                            </button>
+
+                            <!--{# profile dropdown button #}-->
+                            <div @click="isProfileDropdown = !isProfileDropdown" class="ml-3 relative">
+                                <div>
+                                    <button
+                                        class="max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none focus:shadow-solid"
+                                        id="user-menu" aria-label="User menu" aria-haspopup="true">
+                                        <img class="h-8 w-8 rounded-full" src="{{user.image}}" alt="">
+                                    </button>
+                                </div>
+                                <!--{# profile dropdown #}-->
+                                <div x-show="isProfileDropdown"
+                                    x-transition:enter="transition ease-out duration-100 transform"
+                                    x-transition:enter-start="opacity-0 scale-95"
+                                    x-transition:enter-end="opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-75 transform"
+                                    x-transition:leave-start="opacity-100 scale-100"
+                                    x-transition:leave-end="opacity-0 scale-95"
+                                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
+                                    <div class="py-1 rounded-md bg-white shadow-xs">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your
+                                            Profile</a>
+                                        <a href="#"
+                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign
+                                            out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--{# mobile menu button #}-->
+                    <div @click="isMobileMenuOpen = !isMobileMenuOpen" class="-mr-2 flex md:hidden">
+                        <button
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:bg-gray-700 focus:text-white">
+                            <svg x-show="!isMobileMenuOpen" class="block h-6 w-6" stroke="currentColor" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <svg x-show="isMobileMenuOpen" class="block h-6 w-6" stroke="currentColor" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!--{# mobile menu here #}-->
+            <div x-show="isMobileMenuOpen" class="sm:hidden"
+                x-transition:enter="transition ease-out duration-150 transform"
+                x-transition:enter-start="opacity-0 scale-100" x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-100 transform"
+                x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-100"
+                class="md:hidden">
+                <div class="px-2 pt-2 pb-3 sm:px-3">
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Dashboard</a>
+                    <a href="#"
+                        class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Team</a>
+                    <a href="#"
+                        class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Projects</a>
+                    <a href="#"
+                        class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Calendar</a>
+                    <a href="#"
+                        class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Reports</a>
+                </div>
+                <!--{# mobile profile here #}-->
+                <div x-show="isLogged" class="pt-4 pb-3 border-t border-gray-700">
+                    <div class="flex items-center px-5">
+                        <div class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-full" src="{{user.image}}" alt="">
+                        </div>
+                        <div class="ml-3">
+                            <div class="text-base font-medium leading-none text-white">{{user.name}}</div>
+                            <div class="mt-1 text-sm font-medium leading-none text-gray-400">{{user.email}}</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 px-2" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                        <a href="#"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
+                            role="menuitem">Your Profile</a>
+                        <a href="#"
+                            class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
+                            role="menuitem">Settings</a>
+                        <a href="#"
+                            class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
+                            role="menuitem">Sign out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <h1 class="text-lg leading-6 font-semibold text-gray-900">
+                    <!--{# header (title) goes here #}-->
+                    {{header}}
+                </h1>
+            </div>
+        </header>
+        <main>
+            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <!--{# content goes here #}-->
+                <a href="#" @click="isLogged = !isLogged">로그인 트리거</a>
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+    </div>
+</body>

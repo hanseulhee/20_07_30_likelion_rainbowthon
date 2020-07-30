@@ -1,0 +1,20 @@
+@tailwind base;
+
+@tailwind components;
+
+.selected {
+    @apply px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900;
+}
+.selected:focus {
+    @apply outline-none text-white bg-gray-700;
+}
+.tab {
+    @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300;
+}
+.tab:hover {
+    @apply text-white bg-gray-700;
+}
+.tab:focus {
+    @apply outline-none text-white bg-gray-700;
+}
+@tailwind utilities;

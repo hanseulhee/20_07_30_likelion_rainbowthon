@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
+    {% for a in page_posts %}
+    <div class="m-4">
+        <div class="relative">
+            <div class="absolute bg-black z-10 inset-0 opacity-0 hover:opacity-75">
+                <div class="relative flex flex-col justify-center items-center text-white w-full h-full text-xl">
+                    <p>{{a.info}}</p>
+                </div>
+            </div>
+            <div>
+                <img src="{{a.image}}" class="w-full -mb2">
+            </div>
+        </div>
+        <a href="{% url 'view' a.id %}">
+            <p>{{a.title}}</p>
+        </a>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}
